@@ -16,6 +16,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "graphts": "github:hannahellis4242/GraphTS"
+    "graphts": "github:hannahellis4242/GraphTS",
+    "randomized-string": "^2.0.1"
   }
 }
