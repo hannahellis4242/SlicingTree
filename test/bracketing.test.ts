@@ -6,6 +6,8 @@ import BracketWriter from "../src/bracket/BracketWriter";
 import start from "../src/bracket/start";
 import toDot from "../src/toDot";
 
+
+
 describe("bracketing", () => {
   describe("start", () => {
     const showNumberNode = (x: BracketNode<number>): string => {
@@ -32,7 +34,7 @@ describe("bracketing", () => {
       expect(result).toBeDefined();
       expect(result).toBeInstanceOf(Bracket);
       const graph = toGraph(result!);
-      const out = toDot(graph,new BracketWriter(graph));
+      const out = toDot(graph, new BracketWriter(graph));
       console.log(out);
       expect(showTree(result!)).toBe("12|");
     });
@@ -42,19 +44,19 @@ describe("bracketing", () => {
       console.log(showTree(result!));
       expect(result).toBeDefined;
       const graph = toGraph(result!);
-      const out = toDot(graph,new BracketWriter(graph));
+      const out = toDot(graph, new BracketWriter(graph));
       console.log(out);
       expect(showTree(result!)).toBe("123||");
     });
     test("4 elements", () => {
-        const result = start([1, 2, 3,4]);
-        console.log(result);
-        console.log(showTree(result!));
-        expect(result).toBeDefined;
-        const graph = toGraph(result!);
-        const out = toDot(graph,new BracketWriter(graph));
-        console.log(out);
-        expect(showTree(result!)).toBe("1234|||");
-      });
+      const result = start([1, 2, 3, 4]);
+      console.log(result);
+      console.log(showTree(result!));
+      expect(result).toBeDefined;
+      const graph = toGraph(result!);
+      const out = toDot(graph, new BracketWriter(graph));
+      console.log(out);
+      expect(showTree(result!)).toBe("1234|||");
+    });
   });
 });

@@ -1,12 +1,12 @@
 import Graph, { VertexDescriptor, inEdges, outDegree, source, target, vertices } from "graphts";
 
-const root=<G,V,E>(g:Graph<G,V,E>,v?:VertexDescriptor):VertexDescriptor|undefined=>{
+const getRoot=<G,V,E>(g:Graph<G,V,E>,v?:VertexDescriptor):VertexDescriptor|undefined=>{
     if(!v){
       const [v] = vertices(g);
       if(!v){
         return undefined;
       }
-      return root(g,v);
+      return getRoot(g,v);
     }
     if(outDegree(v,g) === 0){
       return v;
@@ -20,6 +20,6 @@ const root=<G,V,E>(g:Graph<G,V,E>,v?:VertexDescriptor):VertexDescriptor|undefine
     {
       return undefined;
     }
-    return root(g,parents[0]);
+    return getRoot(g,parents[0]);
   }
-  export default root;
+  export default getRoot;

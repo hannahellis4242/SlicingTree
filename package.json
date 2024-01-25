@@ -4,7 +4,9 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "watch":"tsc -w",
+    "start":"node dist/main.js"
   },
   "author": "Hannah",
   "license": "ISC",

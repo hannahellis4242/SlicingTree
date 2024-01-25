@@ -1,5 +1,6 @@
 export default interface BracketNode<T> {
   postOrder(): BracketNode<T>[];
+  clone():BracketNode<T>;
 }
 export const show = <T>(
   cur: BracketNode<T>,

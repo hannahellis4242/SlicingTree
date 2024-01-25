@@ -1,3 +1,51 @@
+import { exit } from "process";
+import Bracket from "./bracket/Bracket";
+import BracketNode from "./bracket/BracketNode";
+import BracketWriter from "./bracket/BracketWriter";
+import start from "./bracket/start";
+import toGraph from "./bracket/toGraph";
+import toDot from "./toDot";
+/*
+const rotate = <T>(orig: BracketNode<T>): BracketNode<T> | undefined => {
+  if (!(orig instanceof Bracket)) {
+    return undefined;
+  }
+  if (!(orig.right instanceof Bracket)) {
+    return undefined;
+  }
+  const copy = orig.clone();
+  if (!(copy instanceof Bracket)) {
+    return undefined;
+  }
+
+  const x = copy;
+  const y = copy.right;
+  if (!(y instanceof Bracket)) {
+    return undefined;
+  }
+  const z = y.left;
+  y.left = x;
+  x.right = z;
+
+  return y;
+};
+
+let tree = start([1, 2, 3, 4, 5, 6]);
+if (!tree) {
+  exit(1);
+}
+
+while (tree) {
+  console.log("---------------");
+  const graph = toGraph(tree);
+  const out = toDot(graph, new BracketWriter(graph));
+
+  console.log(out);
+  tree = rotate(tree);
+  console.log("===============");
+}
+*/
+
 import { mkdir, writeFile } from "fs/promises";
 import { SlicingTreeWriter, toGraph } from "./SlicingTree/SlicingTreeGraph";
 import SlicingTreeNode from "./SlicingTree/SlicingTreeNode";

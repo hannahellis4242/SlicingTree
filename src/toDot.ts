@@ -10,7 +10,7 @@ const toDot = <G, V, E>(
     const vertexToLabelMap = new Map<VertexDescriptor, number>();
   
     let output = graphType + " name {\n";
-    output += writer.writeGraph(graph) + "\n";
+    output += writer.writeGraph() + "\n";
     vertices(graph).forEach((vertex) => {
       const label = vertexCounter++;
       vertexToLabelMap.set(vertex, label);
@@ -35,7 +35,7 @@ const toDot = <G, V, E>(
     return output;
   };
   export interface DotWriter<G, V, E> {
-    writeGraph(g: Graph<G, V, E>): string;
+    writeGraph(): string;
     writeVertex(v: VertexDescriptor): string;
     writeEdge(e: EdgeDescriptor): string;
   }

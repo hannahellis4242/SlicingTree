@@ -4,7 +4,7 @@ import BracketGraph, { Direction } from "./BracketGraph";
 
 export default class BracketWriter<T> implements DotWriter<undefined, T | undefined, Direction>{
     constructor(private readonly graph:BracketGraph<T>){}
-    writeGraph(g: Graph<undefined, T | undefined, Direction>): string {
+    writeGraph(): string {
         return "";
     }
     writeVertex(v: VertexDescriptor): string {
