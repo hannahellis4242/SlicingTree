@@ -38,7 +38,7 @@ describe("toDot", () => {
       expect(mock.writeGraph).toHaveBeenCalledTimes(1);
       expect(mock.writeGraph).toHaveBeenCalledWith(graph);
 
-      expect(result).toBe(`graph graph {\n${graphStr}\n}`);
+      expect(result).toBe(`graph name {\n${graphStr}\n}`);
     });
     test("one vertex", () => {
       const vertexStr = generate(4);
@@ -51,7 +51,7 @@ describe("toDot", () => {
       expect(mock.writeGraph).toHaveBeenCalledTimes(1);
       expect(mock.writeGraph).toHaveBeenCalledWith(graph);
       expect(mock.writeVertex).toHaveBeenCalledTimes(1);
-      expect(result).toBe(`graph graph {\n${graphStr}\n1 ${vertexStr};\n}`);
+      expect(result).toBe(`graph name {\n${graphStr}\n1 ${vertexStr};\n}`);
     });
     test("one vertex and one edge", () => {
       const vertexStr = generate(4);
@@ -71,7 +71,7 @@ describe("toDot", () => {
       expect(mock.writeEdge).toHaveBeenCalledTimes(1);
       expect(mock.writeEdge).toHaveBeenCalledWith(e);
       expect(result).toBe(
-        `graph graph {\n${graphStr}\n1 ${vertexStr};\n1 -- 1 ${edgeStr};\n}`
+        `graph name {\n${graphStr}\n1 ${vertexStr};\n1 -- 1 ${edgeStr};\n}`
       );
     });
     test("two vertices and one edge", () => {
@@ -96,7 +96,7 @@ describe("toDot", () => {
         expect(mock.writeEdge).toHaveBeenCalledTimes(1);
         expect(mock.writeEdge).toHaveBeenCalledWith(e);
         expect(result).toBe(
-          `graph graph {\n${graphStr}\n1 ${vertex1Str};\n2 ${vertex2Str};\n1 -- 2 ${edgeStr};\n}`
+          `graph name {\n${graphStr}\n1 ${vertex1Str};\n2 ${vertex2Str};\n1 -- 2 ${edgeStr};\n}`
         );
       });
   });
@@ -110,12 +110,12 @@ describe("toDot", () => {
       expect(mock.writeGraph).toHaveBeenCalledTimes(1);
       expect(mock.writeGraph).toHaveBeenCalledWith(graph);
 
-      expect(result).toBe(`graph graph {\n${graphStr}\n}`);
+      expect(result).toBe(`digraph name {\n${graphStr}\n}`);
     });
     test("one vertex", () => {
       const vertexStr = generate(4);
       mock.writeVertex.mockReturnValueOnce(vertexStr);
-      const graph = new UndirectedGraph<GraphData, VertexData, EdgeData>({
+      const graph = new DirectedGraph<GraphData, VertexData, EdgeData>({
         name: "single vertex graph",
       });
       addVertex({ name: "A" }, graph);
@@ -123,7 +123,7 @@ describe("toDot", () => {
       expect(mock.writeGraph).toHaveBeenCalledTimes(1);
       expect(mock.writeGraph).toHaveBeenCalledWith(graph);
       expect(mock.writeVertex).toHaveBeenCalledTimes(1);
-      expect(result).toBe(`graph graph {\n${graphStr}\n1 ${vertexStr};\n}`);
+      expect(result).toBe(`digraph name {\n${graphStr}\n1 ${vertexStr};\n}`);
     });
     test("one vertex and one edge", () => {
       const vertexStr = generate(4);
@@ -143,7 +143,7 @@ describe("toDot", () => {
       expect(mock.writeEdge).toHaveBeenCalledTimes(1);
       expect(mock.writeEdge).toHaveBeenCalledWith(e);
       expect(result).toBe(
-        `graph graph {\n${graphStr}\n1 ${vertexStr};\n1 -> 1 ${edgeStr};\n}`
+        `digraph name {\n${graphStr}\n1 ${vertexStr};\n1 -> 1 ${edgeStr};\n}`
       );
     });
     test("two vertices and one edge", () => {
@@ -168,7 +168,7 @@ describe("toDot", () => {
         expect(mock.writeEdge).toHaveBeenCalledTimes(1);
         expect(mock.writeEdge).toHaveBeenCalledWith(e);
         expect(result).toBe(
-          `graph graph {\n${graphStr}\n1 ${vertex1Str};\n2 ${vertex2Str};\n1 -> 2 ${edgeStr};\n}`
+          `digraph name {\n${graphStr}\n1 ${vertex1Str};\n2 ${vertex2Str};\n1 -> 2 ${edgeStr};\n}`
         );
       });
   });

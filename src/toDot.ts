@@ -4,11 +4,12 @@ const toDot = <G, V, E>(
     graph: Graph<G, V, E>,
     writer: DotWriter<G, V, E>
   ): string => {
+    const graphType = graph instanceof UndirectedGraph ? "graph" : "digraph";
     const symbol = graph instanceof UndirectedGraph ? "--" : "->";
     let vertexCounter = 1;
     const vertexToLabelMap = new Map<VertexDescriptor, number>();
   
-    let output = "graph graph {\n";
+    let output = graphType + " name {\n";
     output += writer.writeGraph(graph) + "\n";
     vertices(graph).forEach((vertex) => {
       const label = vertexCounter++;
