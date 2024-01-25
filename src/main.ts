@@ -1,11 +1,11 @@
-import { exit } from "process";
+/*import { exit } from "process";
 import Bracket from "./bracket/Bracket";
 import BracketNode from "./bracket/BracketNode";
 import BracketWriter from "./bracket/BracketWriter";
 import start from "./bracket/start";
 import toGraph from "./bracket/toGraph";
 import toDot from "./toDot";
-/*
+
 const rotate = <T>(orig: BracketNode<T>): BracketNode<T> | undefined => {
   if (!(orig instanceof Bracket)) {
     return undefined;
@@ -46,6 +46,17 @@ while (tree) {
 }
 */
 
+import toGraph from "./options/toGraph";
+import createTree from "./options/createTree";
+import OptionWriter from "./options/OptionWriter";
+import toDot from "./toDot";
+
+const result = createTree([1, 2, 3, 4, 5, 6]);
+
+const graph = toGraph(result);
+const out = toDot(graph, new OptionWriter(graph));
+
+console.log(out);
 import { mkdir, writeFile } from "fs/promises";
 import { SlicingTreeWriter, toGraph } from "./SlicingTree/SlicingTreeGraph";
 import SlicingTreeNode from "./SlicingTree/SlicingTreeNode";
