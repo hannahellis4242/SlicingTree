@@ -1,22 +1,6 @@
-import Graph, {
-    DirectedGraph,
-  EdgeDescriptor,
-  UndirectedGraph,
-  VertexDescriptor,
-  addEdge,
-  addVertex,
-  edges,
-  source,
-  target,
-  vertices,
-} from "graphts";
+import { DirectedGraph, UndirectedGraph, addEdge, addVertex } from "graphts";
+import toDot,{DotWriter} from "../src/toDot"
 import { generate } from "randomized-string";
-
-interface DotWriter<G, V, E> {
-  writeGraph(g: Graph<G, V, E>): string;
-  writeVertex(v: VertexDescriptor): string;
-  writeEdge(e: EdgeDescriptor): string;
-}
 
 interface GraphData {
   name: string;
@@ -36,40 +20,6 @@ class MockWriter<G, V, E> implements DotWriter<G, V, E> {
   writeVertex = jest.fn();
   writeEdge = jest.fn();
 }
-
-const toDot = <G, V, E>(
-  graph: Graph<G, V, E>,
-  writer: DotWriter<G, V, E>
-): string => {
-  const symbol = graph instanceof UndirectedGraph ? "--" : "->";
-  let vertexCounter = 1;
-  const vertexToLabelMap = new Map<VertexDescriptor, number>();
-
-  let output = "graph graph {\n";
-  output += writer.writeGraph(graph) + "\n";
-  vertices(graph).forEach((vertex) => {
-    const label = vertexCounter++;
-    vertexToLabelMap.set(vertex, label);
-    output += `${label} ${writer.writeVertex(vertex)};\n`;
-  });
-  edges(graph).forEach((edge) => {
-    const s = source(edge, graph);
-    const t = target(edge, graph);
-    if (!s || !t) {
-      return;
-    }
-    const sourceLabel = vertexToLabelMap.get(s);
-    const targetLabel = vertexToLabelMap.get(t);
-    if (!sourceLabel || !sourceLabel) {
-      return;
-    }
-    output += `${sourceLabel} ${symbol} ${targetLabel} ${writer.writeEdge(
-      edge
-    )};\n`;
-  });
-  output += "}";
-  return output;
-};
 
 describe("toDot", () => {
   let mock = new MockWriter();
@@ -114,7 +64,6 @@ describe("toDot", () => {
       const v = addVertex({ name: "A" }, graph);
       const e = addEdge(v, v, { name: "a" }, graph);
       const result = toDot(graph, mock);
-      console.log(result);
       expect(mock.writeGraph).toHaveBeenCalledTimes(1);
       expect(mock.writeGraph).toHaveBeenCalledWith(graph);
       expect(mock.writeVertex).toHaveBeenCalledTimes(1);
@@ -139,7 +88,6 @@ describe("toDot", () => {
         const v = addVertex({ name: "A" }, graph);
         const e = addEdge(u, v, { name: "a" }, graph);
         const result = toDot(graph, mock);
-        console.log(result);
         expect(mock.writeGraph).toHaveBeenCalledTimes(1);
         expect(mock.writeGraph).toHaveBeenCalledWith(graph);
         expect(mock.writeVertex).toHaveBeenCalledTimes(2);
@@ -188,7 +136,6 @@ describe("toDot", () => {
       const v = addVertex({ name: "A" }, graph);
       const e = addEdge(v, v, { name: "a" }, graph);
       const result = toDot(graph, mock);
-      console.log(result);
       expect(mock.writeGraph).toHaveBeenCalledTimes(1);
       expect(mock.writeGraph).toHaveBeenCalledWith(graph);
       expect(mock.writeVertex).toHaveBeenCalledTimes(1);
@@ -213,7 +160,6 @@ describe("toDot", () => {
         const v = addVertex({ name: "A" }, graph);
         const e = addEdge(u, v, { name: "a" }, graph);
         const result = toDot(graph, mock);
-        console.log(result);
         expect(mock.writeGraph).toHaveBeenCalledTimes(1);
         expect(mock.writeGraph).toHaveBeenCalledWith(graph);
         expect(mock.writeVertex).toHaveBeenCalledTimes(2);
