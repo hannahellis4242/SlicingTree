@@ -6,6 +6,8 @@ import {
   addVertex,
 } from "graphts";
 import toDot, { DotWriter } from "../src/toDot";
+import partitions from "../src/partitioning/partitions";
+import Partition from "../src/partitioning/Partition";
 
 interface SlicingTreeNode {}
 
@@ -99,14 +101,14 @@ class SlicingTreeWriter<T>
   }
 }
 
-const partition = <T>(items: T[]): SlicingTreeNode[] => {
+const createTrees = <T>(items: T[]): SlicingTreeNode[] => {
   if (items.length === 0) {
     return [];
   }
   if (items.length === 1) {
     return [new Leaf(items[0])];
   }
-  if(items.length ===2){
+  /*if (items.length === 2) {
     const child1 = new Leaf(items[0]);
     const child2 = new Leaf(items[1]);
     const slice1 = new HorizontalSlice(child1, child2);
@@ -114,9 +116,18 @@ const partition = <T>(items: T[]): SlicingTreeNode[] => {
     const slice3 = new VerticalSlice(child1, child2);
     const slice4 = new VerticalSlice(child2, child1);
     return [slice1, slice2, slice3, slice4];
-  }
-  
-  return [];
+  }*/
+  return partitions(items)
+    .filter(([x, _]) => x.length !== 0)
+    .filter(([_, x]) => x.length !== 0)
+    .flatMap(([xs, ys]) =>
+      createTrees(xs)
+        .map((x) => createTrees(ys).flatMap((y) => [x, y]))
+        .flatMap(([x, y]) => [
+          new HorizontalSlice(x, y),
+          new VerticalSlice(x, y),
+        ])
+    );
 };
 
 const showResults = (result: SlicingTreeNode[]) => {
@@ -135,21 +146,24 @@ const showResults = (result: SlicingTreeNode[]) => {
   );
 };
 
-describe("partitioning", () => {
+describe("createTrees", () => {
   test("empty", () => {
-    const result = partition([]);
+    const result = createTrees([]);
     expect(result).toHaveLength(0);
   });
   test("1 item", () => {
-    const result = partition([1]);
+    const result = createTrees([1]);
     expect(result).toHaveLength(1);
+    showResults(result);
   });
   test("2 item", () => {
-    const result = partition([1, 2]);
+    const result = createTrees([1, 2]);
     expect(result).toHaveLength(4);
+    showResults(result);
   });
   test("3 item", () => {
-    const result = partition([1, 2,3]);
+    const result = createTrees([1, 2, 3]);
+    showResults(result);
     expect(result).toHaveLength(4);
   });
 });
