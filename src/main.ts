@@ -44,7 +44,6 @@ while (tree) {
   tree = rotate(tree);
   console.log("===============");
 }
-*/
 
 import toGraph from "./options/toGraph";
 import createTree from "./options/createTree";
@@ -56,7 +55,28 @@ const result = createTree([1, 2, 3, 4, 5, 6]);
 const graph = toGraph(result);
 const out = toDot(graph, new OptionWriter(graph));
 
-console.log(out);
+console.log(out);*/
+
+import { mkdir, writeFile } from "fs/promises";
+import { SlicingTreeWriter, toGraph } from "./slicingTree/SlicingTreeGraph";
+import SlicingTreeNode from "./slicingTree/SlicingTreeNode";
+import createTrees from "./slicingTree/createTrees";
+import toDot from "./toDot";
+import { PathLike } from "fs";
+import { join } from "path";
+
+const saveResults = async (result: SlicingTreeNode[], resultPath: string) => {
+  await mkdir(resultPath);
+  await Promise.all(
+    result
+      .map(toGraph)
+      .map((graph) => toDot(graph, new SlicingTreeWriter(graph)))
+      .map((text, i) => writeFile(join(resultPath, `graph${i}.dot`), text))
+  );
+};
+
+const result = createTrees([1, 2, 3]);
+saveResults(result, "SlicingTrees");
 import { mkdir, writeFile } from "fs/promises";
 import { SlicingTreeWriter, toGraph } from "./SlicingTree/SlicingTreeGraph";
 import SlicingTreeNode from "./SlicingTree/SlicingTreeNode";
