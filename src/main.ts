@@ -61,9 +61,8 @@ import { mkdir, writeFile } from "fs/promises";
 import { SlicingTreeWriter, toGraph } from "./slicingTree/SlicingTreeGraph";
 import SlicingTreeNode from "./slicingTree/SlicingTreeNode";
 import createTrees from "./slicingTree/createTrees";
-import toDot from "./toDot";
-import { PathLike } from "fs";
 import { join } from "path";
+import { toDot } from "graphts";
 
 const saveResults = async (result: SlicingTreeNode[], resultPath: string) => {
   await mkdir(resultPath);
@@ -94,5 +93,7 @@ const saveResults = async (result: SlicingTreeNode[], resultPath: string) => {
   );
 };
 
+const result = createTrees([1, 2]);
+saveResults(result, "SlicingTrees");
 const result = createTrees([1, 2]);
 saveResults(result, "SlicingTrees");

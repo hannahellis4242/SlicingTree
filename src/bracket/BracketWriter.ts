@@ -1,5 +1,4 @@
-import Graph, { VertexDescriptor, EdgeDescriptor } from "graphts";
-import { DotWriter } from "../toDot";
+import Graph, { VertexDescriptor, EdgeDescriptor, DotWriter } from "graphts";
 import BracketGraph, { Direction } from "./BracketGraph";
 
 export default class BracketWriter<T> implements DotWriter<undefined, T | undefined, Direction>{

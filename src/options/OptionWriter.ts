@@ -1,7 +1,7 @@
 import { VertexDescriptor, EdgeDescriptor } from "graphts";
-import { DotWriter } from "../toDot";
 import OptionGraph from "./OptionGraph";
 import OptionNode from "./OptionNode";
+import { DotWriter } from "graphts";
 
 export default class OptionWriter<T>
   implements DotWriter<undefined, T | undefined, OptionNode>

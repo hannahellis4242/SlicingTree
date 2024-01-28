@@ -3,7 +3,7 @@ import HorizontalSlice from "./HorizontalSlice";
 import Leaf from "./Leaf";
 import SlicingTreeNode from "./SlicingTreeNode";
 import VerticalSlice from "./VerticalSlice";
-import { DotWriter } from "../toDot";
+import { DotWriter } from "graphts";
 
 type SliceDirection = "H" | "V";
 type EdgeLabels = "left" | "right" | "lower" | "upper";
