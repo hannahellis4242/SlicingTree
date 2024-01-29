@@ -5,7 +5,7 @@ const partitions = <T>(items: T[]): Partition<T>[] =>
     (acc, [f, s]) => {
       const firsts = acc.map((x) => flatten(x, f));
       const seconds = acc.map((x) => flatten(x, s));
-      return firsts.concat(seconds);
+      return seconds.concat(firsts);
     },
     [[[], []]]
   );
