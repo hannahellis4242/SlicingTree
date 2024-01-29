@@ -2,24 +2,24 @@ import HorizontalSlice from "./HorizontalSlice";
 import Leaf from "./Leaf";
 import SlicingTreeNode from "./SlicingTreeNode";
 import VerticalSlice from "./VerticalSlice";
+import postOrder from "./postOrder";
 
 const polish = <T>(
-    node: SlicingTreeNode,
-    fn: <T>(leaf: Leaf<T>) => string
-  ): string => {
-    if (node instanceof Leaf) {
-      return fn(node);
-    }
-    if (node instanceof HorizontalSlice) {
-      const left = polish(node.left, fn);
-      const right = polish(node.right, fn);
-      return `${left}${right}H`;
-    }
-    if (node instanceof VerticalSlice) {
-      const lower = polish(node.lower, fn);
-      const upper = polish(node.upper, fn);
-      return `${lower}${upper}V`;
-    }
-    return "";
-  };
-  export default polish;
+  node: SlicingTreeNode,
+  fn: <T>(leaf: Leaf<T>) => string
+): string =>
+  postOrder(node)
+    .map((x) => {
+      if (x instanceof Leaf) {
+        return fn(x);
+      }
+      if (x instanceof HorizontalSlice) {
+        return "H";
+      }
+      if (x instanceof VerticalSlice) {
+        return "V";
+      }
+      return "";
+    })
+    .join("");
+export default polish;
