@@ -1,41 +1,10 @@
-import Leaf from "../src/SlicingTree/Leaf";
 import HorizontalSlice from "../src/SlicingTree/HorizontalSlice";
+import Leaf from "../src/SlicingTree/Leaf";
 import VerticalSlice from "../src/SlicingTree/VerticalSlice";
-import SlicingTreeNode from "../src/SlicingTree/SlicingTreeNode";
-import {
-  SlicingTreeWriter,
-  toGraph,
-} from "../src/SlicingTree/SlicingTreeGraph";
-import { toDot } from "graphts";
+import polish from "../src/SlicingTree/polish";
 
-const polish = <T>(
-  node: SlicingTreeNode,
-  fn: <T>(leaf: Leaf<T>) => string
-): string => {
-  if (node instanceof Leaf) {
-    return fn(node);
-  }
-  if (node instanceof HorizontalSlice) {
-    const left = polish(node.left, fn);
-    const right = polish(node.right, fn);
-    return `${left}${right}H`;
-  }
-  if (node instanceof VerticalSlice) {
-    const lower = polish(node.lower, fn);
-    const upper = polish(node.upper, fn);
-    return `${lower}${upper}V`;
-  }
-  return "";
-};
 
 describe("polish", () => {
-  //helper
-  const showGraph = (tree: SlicingTreeNode) => {
-    const graph = toGraph(tree);
-    const dot = toDot(graph, new SlicingTreeWriter(graph));
-    console.log(dot);
-  };
-
   let showLeaf = jest.fn();
   beforeEach(() => {
     showLeaf = jest.fn();
@@ -81,7 +50,7 @@ describe("polish", () => {
     const tree = new HorizontalSlice(leaf1, split1);
     const result = polish<number>(tree, showLeaf);
     expect(showLeaf).toHaveBeenCalledTimes(3);
-    expect(result).toBe("1233HH");
+    expect(result).toBe("123HH");
   });
   test("4 element row", () => {
     const leaf1 = new Leaf(1);
