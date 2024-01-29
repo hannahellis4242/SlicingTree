@@ -52,7 +52,7 @@ Let's take a case of three leaves, labeled 1,2 and 3. At the first split there a
 |3|1,2|
 |1,2|3|
 |1,3|2|
-|2,3|3|
+|2,3|1|
 
 This leads to 12 solutions overall (6 with a horizontal split and 6 with a vertical split). The side that has two possible leaves then recurses with those two leaves as inputs.
 
