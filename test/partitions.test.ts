@@ -15,7 +15,6 @@ describe("partitions", () => {
   test("two elements", () => {
     const result = partitions([1, 2]);
     expect(result).toHaveLength(4);
-    console.log(JSON.stringify(result));
     expect(result).toStrictEqual([
       [[], [1, 2]],
       [[1], [2]],
@@ -40,7 +39,6 @@ describe("partitions", () => {
   test("four elements", () => {
     const result = partitions([1, 2, 3, 4]);
     expect(result).toHaveLength(16);
-    console.log(JSON.stringify(result));
     expect(result).toStrictEqual([
       [[], [1, 2, 3, 4]],
       [[1], [2, 3, 4]],
