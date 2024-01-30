@@ -4,7 +4,8 @@ import SlicingTreeNode from "./SlicingTree/SlicingTreeNode";
 import createTrees from "./SlicingTree/createTrees";
 import { join } from "path";
 import { toDot } from "graphts";
-
+import polish from "./SlicingTree/polish";
+/*
 const saveResults = async (result: SlicingTreeNode[], resultPath: string) => {
   await mkdir(resultPath);
   await Promise.all(
@@ -13,7 +14,9 @@ const saveResults = async (result: SlicingTreeNode[], resultPath: string) => {
       .map((graph) => toDot(graph, new SlicingTreeWriter(graph)))
       .map((text, i) => writeFile(join(resultPath, `graph${i}.dot`), text))
   );
-};
+};*/
 
-const result = createTrees([1, 2]);
-saveResults(result, "SlicingTrees");
+writeFile("solutions.txt",createTrees([1,2,3]).map(x=>polish(x,(leaf)=>`${leaf.value}`)).join("\n"));
+
+/*const result = createTrees([1, 2]);
+saveResults(result, "SlicingTrees");*/
