@@ -9,7 +9,12 @@ interface Art {
   rows: string[];
 }
 
-const padStr = (str:string,len:number):string=>{}
+const padStr = (str: string, len: number): string => {
+  if (str.length >= len) {
+    return str;
+  }
+  return str.concat(new Array(len - str.length).fill(" ").join(""));
+};
 
 const asciiArtHelper = (
   node: SlicingTreeNode,
@@ -39,12 +44,18 @@ const asciiArtHelper = (
     const width = Math.max(lower.width, upper.width);
     const height = upper.height + lower.height + 1;
     const rows = upper.rows
+      .map((row) => padStr(row, width))
       .concat(new Array(width).fill("-").join(""))
-      .concat(lower.rows);
+      .concat(lower.rows.map((row) => padStr(row, width)));
     return { width, height, rows };
   }
   return { width: 0, height: 0, rows: [] };
 };
+
+const asciiArt = (
+  node: SlicingTreeNode,
+  fn: <T>(leaf: Leaf<T>) => string
+): string => asciiArtHelper(node, fn).rows.join("\n");
 
 describe("asciiArt", () => {
   describe("helper", () => {
@@ -90,87 +101,85 @@ describe("asciiArt", () => {
       expect(height).toBe(3);
       expect(rows).toStrictEqual(["2", "-", "1"]);
     });
-    test("row of three elements",()=>{
-        const leaf1 = new Leaf(1);
-        const leaf2 = new Leaf(2);
-        const leaf3 = new Leaf(3);
-        const split1 = new HorizontalSlice(leaf1, leaf2);
-        const tree = new HorizontalSlice(split1,leaf3);
-        const { width, height, rows } = asciiArtHelper(tree, showLeaf);
-        expect(width).toBe(5);
-        expect(height).toBe(1);
-        expect(rows).toStrictEqual(["1|2|3"]);
-    })
-    test("column of three elements",()=>{
-        const leaf1 = new Leaf(1);
-        const leaf2 = new Leaf(2);
-        const leaf3 = new Leaf(3);
-        const split1 = new VerticalSlice(leaf1, leaf2);
-        const tree = new VerticalSlice(split1,leaf3);
-        const { width, height, rows } = asciiArtHelper(tree, showLeaf);
-        expect(width).toBe(1);
-        expect(height).toBe(5);
-        expect(rows).toStrictEqual(["3","-","2","-","1"]);
-    })
-    test("row with a column of two elements and one element",()=>{
-        const leaf1 = new Leaf(1);
-        const leaf2 = new Leaf(2);
-        const leaf3 = new Leaf(3);
-        const split1 = new VerticalSlice(leaf1, leaf2);
-        const tree = new HorizontalSlice(split1,leaf3);
-        const { width, height, rows } = asciiArtHelper(tree, showLeaf);
-        expect(width).toBe(3);
-        expect(height).toBe(3);
-        expect(rows).toStrictEqual(["2|3","-| ","1| "]);
-    })
-    test("square",()=>{
-        const leaf1 = new Leaf(1);
-        const leaf2 = new Leaf(2);
-        const leaf3 = new Leaf(3);
-        const leaf4 = new Leaf(4);
-        const split1 = new HorizontalSlice(leaf1, leaf2);
-        const split2 = new HorizontalSlice(leaf3,leaf4);
-        const tree = new VerticalSlice(split2,split1);
-        const { width, height, rows } = asciiArtHelper(tree, showLeaf);
-        console.log(rows.join("\n"));
-        expect(width).toBe(3);
-        expect(height).toBe(3);
-        expect(rows).toStrictEqual(["1|2","---","3|4"]);
-    })
-    test("something a little more complex",()=>{
-        const leaf1 = new Leaf(1);
-        const leaf2 = new Leaf(2);
-        const leaf3 = new Leaf(3);
-        const leaf4 = new Leaf(4);
-        const leaf5 = new Leaf(5);
-        const leaf6= new Leaf(6);
-        const split1 = new HorizontalSlice(leaf1, leaf2);
-        const split2 = new HorizontalSlice(split1,leaf3);
-        const split3 = new HorizontalSlice(leaf4,leaf5);
-        const split4 = new VerticalSlice(split3,split2);
-        const tree = new VerticalSlice(leaf6,split4);
-        const { width, height, rows } = asciiArtHelper(tree, showLeaf);
-        expect(width).toBe(5);
-        expect(height).toBe(5);
-        expect(rows).toStrictEqual(["1|2|3","-----","4|5","-----","6"]);
-    })
-    test("something else a little more complex",()=>{
-        const leaf1 = new Leaf(1);
-        const leaf2 = new Leaf(2);
-        const leaf3 = new Leaf(3);
-        const leaf4 = new Leaf(4);
-        const leaf5 = new Leaf(5);
-        const leaf6= new Leaf(6);
-        const split1 = new HorizontalSlice(leaf1, leaf2);
-        const split2 = new HorizontalSlice(split1,leaf3);
-        const split3 = new HorizontalSlice(leaf4,leaf5);
-        const split4 = new VerticalSlice(split3,split2);
-        const tree = new HorizontalSlice(split4,leaf6);
-        const { width, height, rows } = asciiArtHelper(tree, showLeaf);
-        console.log(rows.join("\n"));
-        expect(width).toBe(5);
-        expect(height).toBe(5);
-        expect(rows).toStrictEqual(["1|2|3","-----","4|5","-----","6"]);
-    })
+    test("row of three elements", () => {
+      const leaf1 = new Leaf(1);
+      const leaf2 = new Leaf(2);
+      const leaf3 = new Leaf(3);
+      const split1 = new HorizontalSlice(leaf1, leaf2);
+      const tree = new HorizontalSlice(split1, leaf3);
+      const { width, height, rows } = asciiArtHelper(tree, showLeaf);
+      expect(width).toBe(5);
+      expect(height).toBe(1);
+      expect(rows).toStrictEqual(["1|2|3"]);
+    });
+    test("column of three elements", () => {
+      const leaf1 = new Leaf(1);
+      const leaf2 = new Leaf(2);
+      const leaf3 = new Leaf(3);
+      const split1 = new VerticalSlice(leaf1, leaf2);
+      const tree = new VerticalSlice(split1, leaf3);
+      const { width, height, rows } = asciiArtHelper(tree, showLeaf);
+      expect(width).toBe(1);
+      expect(height).toBe(5);
+      expect(rows).toStrictEqual(["3", "-", "2", "-", "1"]);
+    });
+    test("row with a column of two elements and one element", () => {
+      const leaf1 = new Leaf(1);
+      const leaf2 = new Leaf(2);
+      const leaf3 = new Leaf(3);
+      const split1 = new VerticalSlice(leaf1, leaf2);
+      const tree = new HorizontalSlice(split1, leaf3);
+      const { width, height, rows } = asciiArtHelper(tree, showLeaf);
+      expect(width).toBe(3);
+      expect(height).toBe(3);
+      expect(rows).toStrictEqual(["2|3", "-| ", "1| "]);
+    });
+    test("square", () => {
+      const leaf1 = new Leaf(1);
+      const leaf2 = new Leaf(2);
+      const leaf3 = new Leaf(3);
+      const leaf4 = new Leaf(4);
+      const split1 = new HorizontalSlice(leaf1, leaf2);
+      const split2 = new HorizontalSlice(leaf3, leaf4);
+      const tree = new VerticalSlice(split2, split1);
+      const { width, height, rows } = asciiArtHelper(tree, showLeaf);
+      expect(width).toBe(3);
+      expect(height).toBe(3);
+      expect(rows).toStrictEqual(["1|2", "---", "3|4"]);
+    });
+    test("something a little more complex", () => {
+      const leaf1 = new Leaf(1);
+      const leaf2 = new Leaf(2);
+      const leaf3 = new Leaf(3);
+      const leaf4 = new Leaf(4);
+      const leaf5 = new Leaf(5);
+      const leaf6 = new Leaf(6);
+      const split1 = new HorizontalSlice(leaf1, leaf2);
+      const split2 = new HorizontalSlice(split1, leaf3);
+      const split3 = new HorizontalSlice(leaf4, leaf5);
+      const split4 = new VerticalSlice(split3, split2);
+      const tree = new VerticalSlice(leaf6, split4);
+      const { width, height, rows } = asciiArtHelper(tree, showLeaf);
+      expect(width).toBe(5);
+      expect(height).toBe(5);
+      expect(rows).toStrictEqual(["1|2|3", "-----", "4|5  ", "-----", "6    "]);
+    });
+    test("something else a little more complex", () => {
+      const leaf1 = new Leaf(1);
+      const leaf2 = new Leaf(2);
+      const leaf3 = new Leaf(3);
+      const leaf4 = new Leaf(4);
+      const leaf5 = new Leaf(5);
+      const leaf6 = new Leaf(6);
+      const split1 = new HorizontalSlice(leaf1, leaf2);
+      const split2 = new HorizontalSlice(split1, leaf3);
+      const split3 = new HorizontalSlice(leaf4, leaf5);
+      const split4 = new VerticalSlice(split3, split2);
+      const tree = new HorizontalSlice(split4, leaf6);
+      const { width, height, rows } = asciiArtHelper(tree, showLeaf);
+      expect(width).toBe(7);
+      expect(height).toBe(3);
+      expect(rows).toStrictEqual(["1|2|3|6", "-----| ", "4|5  | "]);
+    });
   });
 });
